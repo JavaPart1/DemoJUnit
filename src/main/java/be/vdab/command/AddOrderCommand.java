@@ -14,7 +14,10 @@ public class AddOrderCommand implements Command{
     public void execute() {
         System.out.println("give in price");
         double price = scanner.nextDouble();
-        orderService.addOrder(new Order("Cookies", price));
+        System.out.println("Give in name");
+        String name = scanner.next();
+
+        orderService.addOrder(new Order(name, price));
         orderService.getOrder().stream().forEach(order -> {
             System.out.printf("order: %s , price: %f\n" , order.getName(), order.getPrice());
         });

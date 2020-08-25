@@ -2,6 +2,7 @@ package be.vdab;
 
 import be.vdab.command.Command;
 import be.vdab.command.Worker;
+import be.vdab.exceptions.NotFoundException;
 import be.vdab.services.OrderService;
 
 import java.util.Arrays;
@@ -16,14 +17,34 @@ public class App {
 
     }
     private void start() {
-        worker.execute(getCommand());
+        while (true) {
+            try {
+                Command command = getCommand();
+                if (command == null) {
+                    System.out.println("Shutting down");
+                    break;
+                }
+                worker.execute(command);
+            } catch (NotFoundException e) {
+                System.err.println("give in correct number: " + e.getMessage());
+            }
+        }
     }
-    private Command getCommand() {
+
+    private Command getCommand() throws NotFoundException {
         System.out.println("give command");
         Arrays.stream(Worker.Commands.values()).forEach(commands -> System.out.println(commands.ordinal() + " :" + commands.getDescription()));
-        int nrCommand = scanner.nextInt();
-        return Arrays.stream(Worker.Commands.values()).filter(commands -> commands.ordinal() == nrCommand)
-                .findFirst().get().getCommand();
+        if (scanner.hasNextInt()) {
+            int nrCommand = scanner.nextInt();
+            if (nrCommand == 99) {
+                return null;
+            }
+            return Arrays.stream(Worker.Commands.values()).filter(commands -> commands.ordinal() == nrCommand)
+                    .findFirst().orElseThrow(() -> new NotFoundException("Command not found")).getCommand();
+        }
+        scanner.next(); // we need the cursor in the scanner to progress to the next line
+        throw new NotFoundException("wrong format number");
+
     }
 }
 

@@ -3,7 +3,8 @@ package be.vdab.command;
 public class Worker {
 
     public enum Commands{
-        ADD_ORDER("Add an order",new AddOrderCommand());
+        ADD_ORDER("Add an order",new AddOrderCommand()),
+        DELETE_ORDER("Delete an order", new DeleteOrderCommand());
 
         private String description;
         private Command command;
