@@ -1,7 +1,10 @@
 package be.vdab.command;
 
+import be.vdab.App;
 import be.vdab.domain.Order;
 import be.vdab.services.OrderService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Scanner;
 
@@ -12,6 +15,8 @@ public class AddOrderCommand implements Command{
 
     @Override
     public void execute() {
+        Logger logger = LoggerFactory.getLogger(App.class);
+        logger.info("AddOrderCommand invoked");
         System.out.println("give in price");
         double price = scanner.nextDouble();
         System.out.println("Give in name");

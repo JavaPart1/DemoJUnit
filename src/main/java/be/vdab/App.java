@@ -4,12 +4,15 @@ import be.vdab.command.Command;
 import be.vdab.command.Worker;
 import be.vdab.exceptions.NotFoundException;
 import be.vdab.services.OrderService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class App {
     //OrderService orderService = new OrderService();
+    Logger logger = LoggerFactory.getLogger(App.class);
     Scanner scanner = new Scanner(System.in);
     private Worker worker = new Worker();
     public static void main(String[] args) {
@@ -17,6 +20,9 @@ public class App {
 
     }
     private void start() {
+        String programName = "OrderApp";
+        logger.info("{} started", programName);
+
         while (true) {
             try {
                 Command command = getCommand();
